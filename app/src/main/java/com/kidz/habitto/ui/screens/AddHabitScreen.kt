@@ -75,6 +75,8 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
                         placeholder = { Text("e.g. Read 20 pages, Drink water...", color = Color.Gray) },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp),
+                        singleLine = true,
+                        maxLines = 1,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = HabittoPrimary,
                             unfocusedBorderColor = Color.DarkGray,
@@ -231,10 +233,14 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
                     onHabitSaved()
                 }
             },
+            enabled = title.isNotBlank(),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = HabittoPrimary),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = HabittoPrimary,
+                disabledContainerColor = HabittoSurfaceVariant
+            ),
             shape = RoundedCornerShape(28.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
