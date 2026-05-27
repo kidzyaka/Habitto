@@ -9,19 +9,20 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kidz.habitto.R
 import com.kidz.habitto.models.Habit
 import com.kidz.habitto.models.HabitType
 import com.kidz.habitto.ui.theme.*
@@ -50,12 +51,12 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Text(
-            text = "Build a Routine",
+            text = stringResource(R.string.build_routine),
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
             color = Color.White
         )
         Text(
-            text = "Define your target and track your momentum.",
+            text = stringResource(R.string.build_routine_sub),
             style = MaterialTheme.typography.bodyMedium,
             color = HabittoOnSurfaceSecondary
         )
@@ -68,11 +69,11 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
             Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 // Title Input
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("WHAT DO YOU WANT TO TRACK?", style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+                    Text(stringResource(R.string.what_to_track), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
                     OutlinedTextField(
                         value = title,
                         onValueChange = { title = it },
-                        placeholder = { Text("e.g. Read 20 pages, Drink water...", color = Color.Gray) },
+                        placeholder = { Text(stringResource(R.string.title_placeholder), color = Color.Gray) },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp),
                         singleLine = true,
@@ -88,7 +89,7 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
 
                 // Icon Selection
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("ICON", style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+                    Text(stringResource(R.string.icon), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         val icons = listOf(
                             "book" to Icons.AutoMirrored.Filled.MenuBook,
@@ -121,7 +122,7 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
 
                 // Habit Type Selection
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("HABIT TYPE", style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+                    Text(stringResource(R.string.habit_type), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -140,7 +141,11 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = type.name.lowercase().replaceFirstChar { it.uppercase() },
+                                    text = when(type) {
+                                        HabitType.CONTINUOUS -> stringResource(R.string.type_continuous)
+                                        HabitType.WEEKLY -> stringResource(R.string.type_weekly)
+                                        HabitType.CHALLENGE -> stringResource(R.string.type_challenge)
+                                    },
                                     color = if (isSelected) Color.White else HabittoOnSurfaceSecondary,
                                     style = MaterialTheme.typography.labelMedium
                                 )
@@ -153,7 +158,7 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
                 when (selectedType) {
                     HabitType.WEEKLY -> {
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("ACTIVE DAYS", style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+                            Text(stringResource(R.string.active_days), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
                             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                                 val days = listOf("M", "T", "W", "T", "F", "S", "S")
                                 days.forEachIndexed { index, day ->
@@ -190,7 +195,7 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
                                     Icon(Icons.Default.Info, contentDescription = null, tint = HabittoBlue, modifier = Modifier.size(16.dp))
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "Goal: Complete this habit ${activeDays.size} days every week.",
+                                        text = stringResource(R.string.weekly_goal_info, activeDays.size),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = HabittoBlue
                                     )
@@ -199,16 +204,16 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
                         }
                     }
                     HabitType.CONTINUOUS -> {
-                        DateField("START DATE", startDate, dateFormatter) {
+                        DateField(stringResource(R.string.start_date), startDate, dateFormatter) {
                             DatePickerDialog(context, { _, y, m, d -> startDate = LocalDate.of(y, m + 1, d) }, startDate.year, startDate.monthValue - 1, startDate.dayOfMonth).show()
                         }
                     }
                     HabitType.CHALLENGE -> {
                         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                            DateField("START DATE", startDate, dateFormatter) {
+                            DateField(stringResource(R.string.start_date), startDate, dateFormatter) {
                                 DatePickerDialog(context, { _, y, m, d -> startDate = LocalDate.of(y, m + 1, d) }, startDate.year, startDate.monthValue - 1, startDate.dayOfMonth).show()
                             }
-                            DateField("END DATE", endDate, dateFormatter) {
+                            DateField(stringResource(R.string.end_date), endDate, dateFormatter) {
                                 DatePickerDialog(context, { _, y, m, d -> endDate = LocalDate.of(y, m + 1, d) }, endDate.year, endDate.monthValue - 1, endDate.dayOfMonth).show()
                             }
                         }
@@ -246,7 +251,7 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.CheckCircleOutline, contentDescription = null, tint = Color.Black)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Save Habit", color = Color.Black, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
+                Text(stringResource(R.string.save_habit), color = Color.Black, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
             }
         }
     }

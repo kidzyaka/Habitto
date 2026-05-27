@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.kidz.habitto.MainActivity
+import com.kidz.habitto.R
 
 class NotificationReceiver : BroadcastReceiver() {
     companion object {
@@ -19,16 +20,15 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Daily Reminders",
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = "Notification to remind checking habits"
-            }
-            notificationManager.createNotificationChannel(channel)
+        val name = context.getString(R.string.notification_channel_name)
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            name,
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = "Notification to remind checking habits"
         }
+        notificationManager.createNotificationChannel(channel)
 
         val mainIntent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
@@ -39,9 +39,9 @@ class NotificationReceiver : BroadcastReceiver() {
         )
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info) // System icon for now
-            .setContentTitle("Habbito Reminder")
-            .setContentText("Don't lose your momentum! Check your habits for today.")
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle(context.getString(R.string.notification_title))
+            .setContentText(context.getString(R.string.notification_text))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

@@ -10,8 +10,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kidz.habitto.R
 import com.kidz.habitto.viewmodel.HabitViewModel
 import com.kidz.habitto.ui.theme.*
 
@@ -25,7 +27,7 @@ fun ArchiveScreen(viewModel: HabitViewModel) {
             .padding(16.dp)
     ) {
         Text(
-            text = "Archive",
+            text = stringResource(R.string.nav_archive),
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
             color = Color.White
         )
@@ -33,7 +35,7 @@ fun ArchiveScreen(viewModel: HabitViewModel) {
         
         if (archivedHabits.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
-                Text("No archived habits", color = HabittoOnSurfaceSecondary)
+                Text(stringResource(R.string.no_archived), color = HabittoOnSurfaceSecondary)
             }
         } else {
             LazyColumn(

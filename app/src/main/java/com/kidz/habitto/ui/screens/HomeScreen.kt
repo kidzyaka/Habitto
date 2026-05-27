@@ -15,9 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kidz.habitto.R
 import com.kidz.habitto.models.Habit
 import com.kidz.habitto.models.HabitType
 import com.kidz.habitto.ui.theme.*
@@ -43,7 +45,7 @@ fun HomeScreen(viewModel: HabitViewModel, onAddHabit: () -> Unit) {
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Habit", modifier = Modifier.size(32.dp))
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.nav_add), modifier = Modifier.size(32.dp))
             }
         },
         containerColor = Color.Transparent
@@ -81,19 +83,19 @@ fun HomeScreen(viewModel: HabitViewModel, onAddHabit: () -> Unit) {
         AlertDialog(
             onDismissRequest = { habitToReset = null },
             containerColor = HabittoSurface,
-            title = { Text("Reset Habit?", color = Color.White) },
-            text = { Text("This will return the day counter to zero. This action cannot be undone.", color = HabittoOnSurfaceSecondary) },
+            title = { Text(stringResource(R.string.reset_habit_title), color = Color.White) },
+            text = { Text(stringResource(R.string.reset_habit_msg), color = HabittoOnSurfaceSecondary) },
             confirmButton = {
                 TextButton(onClick = {
                     habitToReset?.let { viewModel.resetHabit(it) }
                     habitToReset = null
                 }) {
-                    Text("Reset", color = HabittoReset)
+                    Text(stringResource(R.string.reset), color = HabittoReset)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { habitToReset = null }) {
-                    Text("Cancel", color = Color.White)
+                    Text(stringResource(R.string.cancel), color = Color.White)
                 }
             }
         )
@@ -122,7 +124,7 @@ fun PinnedHabitCard(habit: Habit, onResetRequest: () -> Unit) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Pinned Habit",
+                        text = stringResource(R.string.pinned_habit),
                         style = MaterialTheme.typography.labelMedium,
                         color = HabittoOnSurfaceSecondary
                     )
@@ -142,7 +144,7 @@ fun PinnedHabitCard(habit: Habit, onResetRequest: () -> Unit) {
                     )
                 )
                 Text(
-                    text = "DAYS SINCE",
+                    text = stringResource(R.string.days_since),
                     style = MaterialTheme.typography.labelSmall,
                     color = HabittoOnSurfaceSecondary
                 )
@@ -164,7 +166,7 @@ fun PinnedHabitCard(habit: Habit, onResetRequest: () -> Unit) {
                             tint = HabittoReset
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Reset", color = HabittoReset)
+                        Text(text = stringResource(R.string.reset), color = HabittoReset)
                     }
                 }
             }
@@ -218,12 +220,12 @@ fun HabitListItem(
                         text = when(habit.type) {
                             HabitType.CONTINUOUS -> {
                                 val days = ChronoUnit.DAYS.between(habit.lastResetDate ?: habit.startDate ?: today, today)
-                                "$days Days Since"
+                                stringResource(R.string.days_since_small, days.toInt())
                             }
-                            HabitType.WEEKLY -> "Weekly goal: ${habit.activeDays.size} days"
+                            HabitType.WEEKLY -> stringResource(R.string.weekly_goal, habit.activeDays.size)
                             HabitType.CHALLENGE -> {
                                 val remaining = ChronoUnit.DAYS.between(today, habit.endDate ?: today)
-                                if (remaining < 0) "Challenge Ended" else "$remaining Days Remaining"
+                                if (remaining < 0) stringResource(R.string.challenge_ended) else stringResource(R.string.challenge_remaining, remaining.toInt())
                             }
                         },
                         style = MaterialTheme.typography.bodySmall,
@@ -234,7 +236,7 @@ fun HabitListItem(
                 // Interaction Logic
                 if (habit.type == HabitType.CONTINUOUS) {
                     IconButton(onClick = onResetRequest) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Reset", tint = HabittoReset)
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.reset), tint = HabittoReset)
                     }
                 } else if (habit.type == HabitType.CHALLENGE) {
                     IconButton(
@@ -246,7 +248,7 @@ fun HabitListItem(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = "Complete",
+                            contentDescription = stringResource(R.string.complete),
                             tint = if (isCompletedToday) Color.Black else HabittoOnSurfaceSecondary,
                             modifier = Modifier.size(24.dp)
                         )
@@ -258,7 +260,7 @@ fun HabitListItem(
                 IconButton(onClick = onArchive) {
                     Icon(
                         imageVector = Icons.Default.Inbox,
-                        contentDescription = "Archive",
+                        contentDescription = stringResource(R.string.archive),
                         tint = HabittoOnSurfaceSecondary,
                         modifier = Modifier.size(20.dp)
                     )
@@ -314,8 +316,8 @@ fun HabitListItem(
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(text = "Progress: $completionsInChallenge days", style = MaterialTheme.typography.labelSmall, color = HabittoYellow)
-                        Text(text = "Goal: ${totalDays.toInt()} days", style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+                        Text(text = stringResource(R.string.challenge_progress, completionsInChallenge), style = MaterialTheme.typography.labelSmall, color = HabittoYellow)
+                        Text(text = stringResource(R.string.challenge_goal, totalDays.toInt()), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     LinearProgressIndicator(

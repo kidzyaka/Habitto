@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -38,13 +39,21 @@ import com.kidz.habitto.ui.screens.ArchiveScreen
 import com.kidz.habitto.ui.screens.HomeScreen
 import com.kidz.habitto.ui.screens.SettingsScreen
 import com.kidz.habitto.ui.theme.*
+import com.kidz.habitto.utils.LocaleHelper
 import com.kidz.habitto.viewmodel.HabitViewModel
 
-class MainActivity : ComponentActivity() {
+class MainActivity : androidx.appcompat.app.AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         createNotificationChannel()
+        
+        // Initialize custom locale if saved
+        val selectedLang = LocaleHelper.getSelectedLanguage(this)
+        if (selectedLang != "system") {
+            LocaleHelper.setLocale(selectedLang)
+        }
+
         setContent {
             HabittoTheme {
                 PermissionRequest()
@@ -54,17 +63,15 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Daily Reminders"
-            val descriptionText = "Notification to remind checking habits"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(NotificationReceiver.CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+        val name = getString(R.string.notification_channel_name)
+        val descriptionText = "Notification to remind checking habits"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(NotificationReceiver.CHANNEL_ID, name, importance).apply {
+            description = descriptionText
         }
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }
 
@@ -81,11 +88,11 @@ fun PermissionRequest() {
     }
 }
 
-sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
-    object Home : Screen("home", "Home", Icons.Default.Home)
-    object Archive : Screen("archive", "Archive", Icons.Default.Inventory2)
-    object Settings : Screen("settings", "Settings", Icons.Default.Settings)
-    object Add : Screen("add", "Add", Icons.Default.Add)
+sealed class Screen(val route: String, val labelId: Int, val icon: ImageVector) {
+    object Home : Screen("home", R.string.nav_home, Icons.Default.Home)
+    object Archive : Screen("archive", R.string.nav_archive, Icons.Default.Inventory2)
+    object Settings : Screen("settings", R.string.nav_settings, Icons.Default.Settings)
+    object Add : Screen("add", R.string.nav_add, Icons.Default.Add)
 }
 
 @Composable
@@ -125,7 +132,7 @@ fun HabittoApp() {
                                 tint = if (isSelected) HabittoPrimary else HabittoOnSurfaceSecondary
                             )
                         },
-                        label = { Text(screen.label, color = if (isSelected) HabittoPrimary else HabittoOnSurfaceSecondary) },
+                        label = { Text(stringResource(screen.labelId), color = if (isSelected) HabittoPrimary else HabittoOnSurfaceSecondary) },
                         colors = NavigationBarItemDefaults.colors(
                             indicatorColor = Color.Transparent
                         )

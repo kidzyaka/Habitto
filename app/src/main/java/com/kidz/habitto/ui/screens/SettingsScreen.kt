@@ -15,10 +15,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kidz.habitto.R
 import com.kidz.habitto.notifications.ReminderManager
 import com.kidz.habitto.ui.theme.*
+import com.kidz.habitto.utils.LocaleHelper
 import com.kidz.habitto.viewmodel.HabitViewModel
 import java.util.*
 
@@ -28,9 +31,12 @@ fun SettingsScreen(viewModel: HabitViewModel) {
     val prefs = remember { context.getSharedPreferences("habitto_settings", android.content.Context.MODE_PRIVATE) }
     
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
+    
     var reminderEnabled by remember { mutableStateOf(prefs.getBoolean("reminder_enabled", false)) }
     var reminderHour by remember { mutableIntStateOf(prefs.getInt("reminder_hour", 20)) }
     var reminderMinute by remember { mutableIntStateOf(prefs.getInt("reminder_minute", 0)) }
+    var currentLanguage by remember { mutableStateOf(LocaleHelper.getSelectedLanguage(context)) }
 
     Column(
         modifier = Modifier
@@ -39,13 +45,13 @@ fun SettingsScreen(viewModel: HabitViewModel) {
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Text(
-            text = "Settings",
+            text = stringResource(R.string.nav_settings),
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
             color = Color.White
         )
 
         // Notifications Section
-        Text("Notifications", style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+        Text(stringResource(R.string.notifications), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(28.dp),
@@ -66,8 +72,8 @@ fun SettingsScreen(viewModel: HabitViewModel) {
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
-                            Text("Daily Reminder", style = MaterialTheme.typography.titleMedium, color = Color.White)
-                            Text("Check your habits every day", style = MaterialTheme.typography.bodySmall, color = HabittoOnSurfaceSecondary)
+                            Text(stringResource(R.string.daily_reminder), style = MaterialTheme.typography.titleMedium, color = Color.White)
+                            Text(stringResource(R.string.daily_reminder_sub), style = MaterialTheme.typography.bodySmall, color = HabittoOnSurfaceSecondary)
                         }
                     }
                     Switch(
@@ -89,7 +95,7 @@ fun SettingsScreen(viewModel: HabitViewModel) {
                     HorizontalDivider(color = Color.DarkGray, modifier = Modifier.padding(vertical = 8.dp))
                     SettingsItem(
                         icon = Icons.Default.AccessTime,
-                        title = "Reminder Time",
+                        title = stringResource(R.string.reminder_time),
                         subtitle = String.format("%02d:%02d", reminderHour, reminderMinute),
                         onClick = {
                             TimePickerDialog(context, { _, h, m ->
@@ -104,8 +110,33 @@ fun SettingsScreen(viewModel: HabitViewModel) {
             }
         }
 
+        // Language Section
+        Text(stringResource(R.string.language), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(28.dp),
+            colors = CardDefaults.cardColors(containerColor = HabittoSurface)
+        ) {
+            val languageName = when(currentLanguage) {
+                "en" -> stringResource(R.string.lang_en)
+                "ru" -> stringResource(R.string.lang_ru)
+                "fr" -> stringResource(R.string.lang_fr)
+                "es" -> stringResource(R.string.lang_es)
+                "zh" -> stringResource(R.string.lang_zh)
+                "de" -> stringResource(R.string.lang_de)
+                else -> stringResource(R.string.lang_system)
+            }
+            
+            SettingsItem(
+                icon = Icons.Default.Language,
+                title = stringResource(R.string.language),
+                subtitle = languageName,
+                onClick = { showLanguageDialog = true }
+            )
+        }
+
         // Data & About Section
-        Text("App Info", style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+        Text(stringResource(R.string.app_info), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(28.dp),
@@ -114,22 +145,22 @@ fun SettingsScreen(viewModel: HabitViewModel) {
             Column(modifier = Modifier.padding(16.dp)) {
                 SettingsItem(
                     icon = Icons.Default.Security,
-                    title = "Privacy Policy",
-                    subtitle = "Local-only, no data leaves your device",
+                    title = stringResource(R.string.privacy_policy),
+                    subtitle = stringResource(R.string.privacy_policy_sub),
                     onClick = {}
                 )
                 HorizontalDivider(color = Color.DarkGray, modifier = Modifier.padding(vertical = 8.dp))
                 SettingsItem(
                     icon = Icons.Default.Info,
-                    title = "App Version",
-                    subtitle = "1.0.0 (Disciplined Beta)",
+                    title = stringResource(R.string.app_version),
+                    subtitle = stringResource(R.string.app_version_sub),
                     onClick = {}
                 )
                 HorizontalDivider(color = Color.DarkGray, modifier = Modifier.padding(vertical = 8.dp))
                 SettingsItem(
                     icon = Icons.Default.DeleteForever,
-                    title = "Clear All Data",
-                    subtitle = "Irreversibly delete all habits",
+                    title = stringResource(R.string.clear_data),
+                    subtitle = stringResource(R.string.clear_data_sub),
                     iconColor = HabittoReset,
                     onClick = { showDeleteDialog = true }
                 )
@@ -141,19 +172,66 @@ fun SettingsScreen(viewModel: HabitViewModel) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
             containerColor = HabittoSurface,
-            title = { Text("Delete All Data?", color = Color.White) },
-            text = { Text("This will permanently remove all your habits and progress. This action cannot be undone.", color = HabittoOnSurfaceSecondary) },
+            title = { Text(stringResource(R.string.clear_data_title), color = Color.White) },
+            text = { Text(stringResource(R.string.clear_data_msg), color = HabittoOnSurfaceSecondary) },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.clearAllData()
                     showDeleteDialog = false
                 }) {
-                    Text("Delete Everything", color = HabittoReset)
+                    Text(stringResource(R.string.delete_everything), color = HabittoReset)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel", color = Color.White)
+                    Text(stringResource(R.string.cancel), color = Color.White)
+                }
+            }
+        )
+    }
+
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            containerColor = HabittoSurface,
+            title = { Text(stringResource(R.string.select_language), color = Color.White) },
+            text = {
+                val languages = listOf(
+                    "system" to stringResource(R.string.lang_system),
+                    "en" to stringResource(R.string.lang_en),
+                    "ru" to stringResource(R.string.lang_ru),
+                    "fr" to stringResource(R.string.lang_fr),
+                    "es" to stringResource(R.string.lang_es),
+                    "zh" to stringResource(R.string.lang_zh),
+                    "de" to stringResource(R.string.lang_de)
+                )
+                Column {
+                    languages.forEach { (code, name) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    currentLanguage = code
+                                    LocaleHelper.persistLanguage(context, code)
+                                    showLanguageDialog = false
+                                }
+                                .padding(vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = (currentLanguage == code),
+                                onClick = null,
+                                colors = RadioButtonDefaults.colors(selectedColor = HabittoPrimary)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = name, color = Color.White)
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLanguageDialog = false }) {
+                    Text(stringResource(R.string.cancel), color = HabittoPrimary)
                 }
             }
         )

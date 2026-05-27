@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Habitto</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Главная</string>
+    <string name="nav_archive">Архив</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_add">Добавить</string>
+
+    <!-- Home Screen -->
+    <string name="pinned_habit">Закрепленная привычка</string>
+    <string name="days_since">ДНЕЙ ПРОШЛО</string>
+    <string name="days_since_small">Прошло дней: %d</string>
+    <string name="reset">Сбросить</string>
+    <string name="reset_habit_title">Сбросить привычку?</string>
+    <string name="reset_habit_msg">Это обнулит счетчик дней. Это действие нельзя отменить.</string>
+    <string name="cancel">Отмена</string>
+    <string name="complete">Отметить</string>
+    <string name="archive">В архив</string>
+    <string name="unarchive">Вернуть</string>
+
+    <!-- Habit Types -->
+    <string name="type_continuous">Постоянная</string>
+    <string name="type_weekly">Еженедельная</string>
+    <string name="type_challenge">Челлендж</string>
+    <string name="weekly_goal">Цель: %d дн. в неделю</string>
+    <string name="challenge_remaining">Осталось дней: %d</string>
+    <string name="challenge_ended">Челлендж окончен</string>
+    <string name="challenge_progress">Прогресс: %d дн.</string>
+    <string name="challenge_goal">Цель: %d дн.</string>
+
+    <!-- Add Habit Screen -->
+    <string name="build_routine">Создать рутину</string>
+    <string name="build_routine_sub">Определите цель и следите за прогрессом.</string>
+    <string name="what_to_track">ЧТО ВЫ ХОТИТЕ ОТСЛЕЖИВАТЬ?</string>
+    <string name="title_placeholder">напр. Читать 20 страниц, Пить воду...</string>
+    <string name="icon">ИКОНКА</string>
+    <string name="habit_type">ТИП ПРИВЫЧКИ</string>
+    <string name="active_days">АКТИВНЫЕ ДНИ</string>
+    <string name="weekly_goal_info">Цель: Выполнять эту привычку %d дн. в неделю.</string>
+    <string name="start_date">ДАТА НАЧАЛА</string>
+    <string name="end_date">ДАТА ОКОНЧАНИЯ</string>
+    <string name="save_habit">Сохранить привычку</string>
+
+    <!-- Archive Screen -->
+    <string name="no_archived">Нет архивных привычек</string>
+
+    <!-- Settings Screen -->
+    <string name="notifications">Уведомления</string>
+    <string name="daily_reminder">Ежедневное напоминание</string>
+    <string name="daily_reminder_sub">Проверяйте привычки каждый день</string>
+    <string name="reminder_time">Время напоминания</string>
+    <string name="app_info">О приложении</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="privacy_policy_sub">Только локально, данные не покидают устройство</string>
+    <string name="app_version">Версия приложения</string>
+    <string name="app_version_sub">1.0.0 (Disciplined Beta)</string>
+    <string name="clear_data">Очистить все данные</string>
+    <string name="clear_data_sub">Безвозвратно удалить все привычки</string>
+    <string name="clear_data_title">Удалить все данные?</string>
+    <string name="clear_data_msg">Это навсегдa удалит все ваши привычки и прогресс. Это действие нельзя отменить.</string>
+    <string name="delete_everything">Удалить всё</string>
+    <string name="language">Язык</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="lang_system">Системный</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_es">Español</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_de">Deutsch</string>
+
+    <!-- Notifications -->
+    <string name="notification_title">Напоминание Habitto</string>
+    <string name="notification_text">Не теряйте темп! Отметьте привычки на сегодня.</string>
+    <string name="notification_channel_name">Ежедневные напоминания</string>
+</resources>

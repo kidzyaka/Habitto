@@ -1,3 +1,77 @@
 <resources>
     <string name="app_name">Habitto</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_archive">Archive</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_add">Add</string>
+
+    <!-- Home Screen -->
+    <string name="pinned_habit">Pinned Habit</string>
+    <string name="days_since">DAYS SINCE</string>
+    <string name="days_since_small">%d Days Since</string>
+    <string name="reset">Reset</string>
+    <string name="reset_habit_title">Reset Habit?</string>
+    <string name="reset_habit_msg">This will return the day counter to zero. This action cannot be undone.</string>
+    <string name="cancel">Cancel</string>
+    <string name="complete">Complete</string>
+    <string name="archive">Archive</string>
+    <string name="unarchive">Unarchive</string>
+
+    <!-- Habit Types -->
+    <string name="type_continuous">Continuous</string>
+    <string name="type_weekly">Weekly</string>
+    <string name="type_challenge">Challenge</string>
+    <string name="weekly_goal">Weekly goal: %d days</string>
+    <string name="challenge_remaining">%d Days Remaining</string>
+    <string name="challenge_ended">Challenge Ended</string>
+    <string name="challenge_progress">Progress: %d days</string>
+    <string name="challenge_goal">Goal: %d days</string>
+
+    <!-- Add Habit Screen -->
+    <string name="build_routine">Build a Routine</string>
+    <string name="build_routine_sub">Define your target and track your momentum.</string>
+    <string name="what_to_track">WHAT DO YOU WANT TO TRACK?</string>
+    <string name="title_placeholder">e.g. Read 20 pages, Drink water...</string>
+    <string name="icon">ICON</string>
+    <string name="habit_type">HABIT TYPE</string>
+    <string name="active_days">ACTIVE DAYS</string>
+    <string name="weekly_goal_info">Goal: Complete this habit %d days every week.</string>
+    <string name="start_date">START DATE</string>
+    <string name="end_date">END DATE</string>
+    <string name="save_habit">Save Habit</string>
+
+    <!-- Archive Screen -->
+    <string name="no_archived">No archived habits</string>
+
+    <!-- Settings Screen -->
+    <string name="notifications">Notifications</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="daily_reminder_sub">Check your habits every day</string>
+    <string name="reminder_time">Reminder Time</string>
+    <string name="app_info">App Info</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_sub">Local-only, no data leaves your device</string>
+    <string name="app_version">App Version</string>
+    <string name="app_version_sub">1.0.0 (Disciplined Beta)</string>
+    <string name="clear_data">Clear All Data</string>
+    <string name="clear_data_sub">Irreversibly delete all habits</string>
+    <string name="clear_data_title">Delete All Data?</string>
+    <string name="clear_data_msg">This will permanently remove all your habits and progress. This action cannot be undone.</string>
+    <string name="delete_everything">Delete Everything</string>
+    <string name="language">Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="lang_system">System Default</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_es">Español</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_de">Deutsch</string>
+
+    <!-- Notifications -->
+    <string name="notification_title">Habbito Reminder</string>
+    <string name="notification_text">Don\'t lose your momentum! Check your habits for today.</string>
+    <string name="notification_channel_name">Daily Reminders</string>
 </resources>
