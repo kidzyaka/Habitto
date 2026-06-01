@@ -54,7 +54,7 @@
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="privacy_policy_sub">Только локально, данные не покидают устройство</string>
     <string name="app_version">Версия приложения</string>
-    <string name="app_version_sub">1.0.0 (Disciplined Beta)</string>
+    <string name="app_version_sub">0.4 (Альфа)</string>
     <string name="clear_data">Очистить все данные</string>
     <string name="clear_data_sub">Безвозвратно удалить все привычки</string>
     <string name="clear_data_title">Удалить все данные?</string>

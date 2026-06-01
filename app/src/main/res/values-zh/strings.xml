@@ -42,7 +42,7 @@
     <string name="privacy_policy">隐私政策</string>
     <string name="privacy_policy_sub">仅限本地，数据不会离开您的设备</string>
     <string name="app_version">应用版本</string>
-    <string name="app_version_sub">1.0.0 (自律测试版)</string>
+    <string name="app_version_sub">1.0.0 (Alpha)</string>
     <string name="clear_data">清除所有数据</string>
     <string name="clear_data_sub">不可恢复地删除所有习惯</string>
     <string name="clear_data_title">删除所有数据？</string>

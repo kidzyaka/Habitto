@@ -42,7 +42,7 @@
     <string name="privacy_policy">Política de privacidad</string>
     <string name="privacy_policy_sub">Local únicamente, tus datos no salen del dispositivo</string>
     <string name="app_version">Versión de la app</string>
-    <string name="app_version_sub">1.0.0 (Beta Disciplinada)</string>
+    <string name="app_version_sub">0.4 (Alpha)</string>
     <string name="clear_data">Borrar todos los datos</string>
     <string name="clear_data_sub">Eliminar irreversiblemente todos los hábitos</string>
     <string name="clear_data_title">¿Borrar todos los datos?</string>

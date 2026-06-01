@@ -54,7 +54,7 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_sub">Local-only, no data leaves your device</string>
     <string name="app_version">App Version</string>
-    <string name="app_version_sub">1.0.0 (Disciplined Beta)</string>
+    <string name="app_version_sub">0.4 (Alpha)</string>
     <string name="clear_data">Clear All Data</string>
     <string name="clear_data_sub">Irreversibly delete all habits</string>
     <string name="clear_data_title">Delete All Data?</string>
