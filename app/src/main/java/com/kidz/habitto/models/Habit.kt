@@ -1,5 +1,6 @@
 package com.kidz.habitto.models
 
+import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 
 enum class HabitType {
@@ -9,22 +10,22 @@ enum class HabitType {
 }
 
 data class Habit(
-    val id: Long = System.currentTimeMillis(),
-    val title: String,
-    val type: HabitType,
-    val iconName: String, // Name of the system icon
-    val iconColor: Int,   // Color as Int
-    val isPinned: Boolean = false,
-    val isArchived: Boolean = false,
+    @SerializedName("id") val id: Long = System.currentTimeMillis(),
+    @SerializedName("title") val title: String,
+    @SerializedName("type") val type: HabitType,
+    @SerializedName("iconName") val iconName: String, // Name of the system icon
+    @SerializedName("iconColor") val iconColor: Int,   // Color as Int
+    @SerializedName("isPinned") val isPinned: Boolean = false,
+    @SerializedName("isArchived") val isArchived: Boolean = false,
     
     // Continuous / Challenge specific
-    val startDate: LocalDate? = null,
-    val endDate: LocalDate? = null, // Only for Challenge
+    @SerializedName("startDate") val startDate: LocalDate? = null,
+    @SerializedName("endDate") val endDate: LocalDate? = null, // Only for Challenge
     
     // Weekly specific
-    val activeDays: List<Int> = emptyList(), // 1=Mon, 2=Tue, ..., 7=Sun
+    @SerializedName("activeDays") val activeDays: List<Int> = emptyList(), // 1=Mon, 2=Tue, ..., 7=Sun
     
     // Progress tracking
-    val completedDates: List<LocalDate> = emptyList(),
-    val lastResetDate: LocalDate? = null // For Continuous "Reset" logic
+    @SerializedName("completedDates") val completedDates: List<LocalDate> = emptyList(),
+    @SerializedName("lastResetDate") val lastResetDate: LocalDate? = null // For Continuous "Reset" logic
 )

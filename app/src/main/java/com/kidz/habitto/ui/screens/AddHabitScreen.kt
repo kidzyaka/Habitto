@@ -160,7 +160,9 @@ fun AddHabitScreen(viewModel: HabitViewModel, onHabitSaved: () -> Unit) {
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(stringResource(R.string.active_days), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
                             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                                val days = listOf("M", "T", "W", "T", "F", "S", "S")
+                                val days = java.time.DayOfWeek.entries.map { dayOfWeek ->
+                                    dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, java.util.Locale.getDefault())
+                                }
                                 days.forEachIndexed { index, day ->
                                     val dayNum = index + 1
                                     val isSelected = activeDays.contains(dayNum)

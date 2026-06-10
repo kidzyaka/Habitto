@@ -9,18 +9,29 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class HabitViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = HabitRepository(application)
 
+    init {
+        checkAndArchiveFailedChallenges()
+    }
+
     val activeHabits: StateFlow<List<Habit>> = repository.habits
-        .map { list -> 
+        .map { list -> list.filter { !it.isArchived } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    private fun checkAndArchiveFailedChallenges() {
+        viewModelScope.launch(Dispatchers.IO) {
             val today = LocalDate.now()
             val yesterday = today.minusDays(1)
+            val currentHabits = repository.habits.value
             
-            val processedList = list.map { habit ->
-                if (habit.isArchived) return@map habit
+            val toArchive = currentHabits.filter { habit ->
+                if (habit.isArchived) return@filter false
                 
                 // Challenge Failure Logic: If a day was missed, move to archive
                 if (habit.type == com.kidz.habitto.models.HabitType.CHALLENGE) {
@@ -30,32 +41,20 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
                         val wasYesterdayCompleted = habit.completedDates.contains(yesterday)
                         val wasYesterdayBeforeStart = yesterday.isBefore(start)
                         
-                        if (!wasYesterdayCompleted && !wasYesterdayBeforeStart) {
-                            return@map habit.copy(isArchived = true, isPinned = false)
-                        }
+                        if (!wasYesterdayCompleted && !wasYesterdayBeforeStart) return@filter true
                     }
                     
                     // Also archive if the end date has passed
-                    if (habit.endDate != null && today.isAfter(habit.endDate)) {
-                        return@map habit.copy(isArchived = true, isPinned = false)
-                    }
+                    if (habit.endDate != null && today.isAfter(habit.endDate)) return@filter true
                 }
-                habit
+                false
+            }.map { it.copy(isArchived = true, isPinned = false) }
+
+            if (toArchive.isNotEmpty()) {
+                repository.updateHabits(toArchive)
             }
-            
-            // Sync any automated archiving back to repository if list changed
-            if (processedList != list) {
-                processedList.forEach { habit ->
-                    val original = list.find { it.id == habit.id }
-                    if (original != null && original.isArchived != habit.isArchived) {
-                        repository.updateHabit(habit)
-                    }
-                }
-            }
-            
-            processedList.filter { !it.isArchived }
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    }
 
     val archivedHabits: StateFlow<List<Habit>> = repository.habits
         .map { list -> list.filter { it.isArchived } }

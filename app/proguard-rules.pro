@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Сохранение классов моделей данных Habit и перечислений для корректной десериализации Gson
+-keep class com.kidz.habitto.models.** { *; }
+-keepclassmembers enum com.kidz.habitto.models.** { *; }

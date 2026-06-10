@@ -71,7 +71,7 @@
     <string name="lang_de">Deutsch</string>
 
     <!-- Notifications -->
-    <string name="notification_title">Habbito Reminder</string>
+    <string name="notification_title">Habitto Reminder</string>
     <string name="notification_text">Don\'t lose your momentum! Check your habits for today.</string>
     <string name="notification_channel_name">Daily Reminders</string>
 </resources>

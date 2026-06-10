@@ -47,12 +47,6 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         createNotificationChannel()
-        
-        // Initialize custom locale if saved
-        val selectedLang = LocaleHelper.getSelectedLanguage(this)
-        if (selectedLang != "system") {
-            LocaleHelper.setLocale(selectedLang)
-        }
 
         setContent {
             HabittoTheme {

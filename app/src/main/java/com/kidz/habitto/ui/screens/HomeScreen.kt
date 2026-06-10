@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,8 +31,8 @@ import java.time.temporal.ChronoUnit
 @Composable
 fun HomeScreen(viewModel: HabitViewModel, onAddHabit: () -> Unit) {
     val habits by viewModel.activeHabits.collectAsState()
-    val pinnedHabit = habits.find { it.isPinned }
-    val otherHabits = habits.filter { !it.isPinned }
+    val pinnedHabit = remember(habits) { habits.find { it.isPinned } }
+    val otherHabits = remember(habits) { habits.filter { !it.isPinned } }
     
     var habitToReset by remember { mutableStateOf<Habit?>(null) }
 
@@ -199,11 +200,7 @@ fun HabitListItem(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = when(habit.type) {
-                            HabitType.WEEKLY -> Icons.Default.FitnessCenter
-                            HabitType.CHALLENGE -> Icons.Default.EmojiEvents
-                            else -> Icons.Default.Language
-                        },
+                        imageVector = getIconForName(habit.iconName, habit.type),
                         contentDescription = null,
                         tint = HabittoPrimary,
                         modifier = Modifier.size(20.dp)
@@ -274,12 +271,14 @@ fun HabitListItem(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        val days = listOf("M", "T", "W", "T", "F", "S", "S")
+                        val days = java.time.DayOfWeek.entries.map { dayOfWeek ->
+                            dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, java.util.Locale.getDefault())
+                        }
                         days.forEachIndexed { index, day ->
                             val dayNum = index + 1
                             val isTargetDay = habit.activeDays.contains(dayNum)
                             
-                            val firstDayOfWeek = today.minusDays(today.dayOfWeek.value.toLong() - 1)
+                            val firstDayOfWeek = today.with(java.time.temporal.WeekFields.of(java.util.Locale.getDefault()).dayOfWeek(), 1L)
                             val thisDay = firstDayOfWeek.plusDays(index.toLong())
                             val isCompleted = habit.completedDates.contains(thisDay)
 
@@ -332,6 +331,22 @@ fun HabitListItem(
                 }
                 HabitType.CONTINUOUS -> {}
             }
+        }
+    }
+}
+
+fun getIconForName(name: String, habitType: HabitType): androidx.compose.ui.graphics.vector.ImageVector {
+    return when(name) {
+        "book" -> Icons.AutoMirrored.Filled.MenuBook
+        "water" -> Icons.Default.WaterDrop
+        "gym" -> Icons.Default.FitnessCenter
+        "health" -> Icons.Default.MonitorHeart
+        "meditate" -> Icons.Default.SelfImprovement
+        "sleep" -> Icons.Default.NightsStay
+        else -> when(habitType) {
+            HabitType.WEEKLY -> Icons.Default.FitnessCenter
+            HabitType.CHALLENGE -> Icons.Default.EmojiEvents
+            else -> Icons.Default.Language
         }
     }
 }

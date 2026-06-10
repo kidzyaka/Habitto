@@ -47,6 +47,18 @@ class HabitRepository(context: Context) {
         saveHabits(_habits.value.filter { it.id != id })
     }
 
+    fun updateHabits(updatedHabits: List<Habit>) {
+        val updatedIds = updatedHabits.map { it.id }.toSet()
+        val newList = _habits.value.map { habit ->
+            if (habit.id in updatedIds) {
+                updatedHabits.find { it.id == habit.id } ?: habit
+            } else {
+                habit
+            }
+        }
+        saveHabits(newList)
+    }
+
     private class LocalDateAdapter : JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
         private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 

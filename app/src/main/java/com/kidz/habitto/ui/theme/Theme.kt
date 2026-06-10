@@ -1,6 +1,8 @@
 package com.kidz.habitto.ui.theme
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +41,12 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = HabittoOnSurfaceSecondary
 )
 
+fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
 @Composable
 fun HabittoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -58,9 +66,11 @@ fun HabittoTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            view.context.findActivity()?.let { activity ->
+                val window = activity.window
+                // window.statusBarColor = colorScheme.background.toArgb()
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            }
         }
     }
 
