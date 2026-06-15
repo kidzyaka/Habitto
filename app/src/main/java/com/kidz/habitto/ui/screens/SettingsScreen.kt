@@ -4,7 +4,9 @@ import android.app.TimePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -41,8 +43,10 @@ fun SettingsScreen(viewModel: HabitViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 24.dp)
+            .padding(top = 24.dp, bottom = 48.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
         Text(
             text = stringResource(R.string.nav_settings),
@@ -51,31 +55,35 @@ fun SettingsScreen(viewModel: HabitViewModel) {
         )
 
         // Notifications Section
-        Text(stringResource(R.string.notifications), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+        Text(stringResource(R.string.notifications), style = MaterialTheme.typography.labelLarge, color = HabittoOnSurfaceSecondary)
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(28.dp),
+            shape = RoundedCornerShape(32.dp),
             colors = CardDefaults.cardColors(containerColor = HabittoSurface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Box(
-                            modifier = Modifier.size(40.dp).clip(RoundedCornerShape(10.dp)).background(HabittoPrimary.copy(alpha = 0.1f)),
+                            modifier = Modifier.size(56.dp).clip(RoundedCornerShape(16.dp)).background(HabittoPrimary.copy(alpha = 0.1f)),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(Icons.Default.Notifications, contentDescription = null, tint = HabittoPrimary, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Notifications, contentDescription = null, tint = HabittoPrimary, modifier = Modifier.size(28.dp))
                         }
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(20.dp))
                         Column {
-                            Text(stringResource(R.string.daily_reminder), style = MaterialTheme.typography.titleMedium, color = Color.White)
-                            Text(stringResource(R.string.daily_reminder_sub), style = MaterialTheme.typography.bodySmall, color = HabittoOnSurfaceSecondary)
+                            Text(stringResource(R.string.daily_reminder), style = MaterialTheme.typography.titleLarge, color = Color.White)
+                            Text(stringResource(R.string.daily_reminder_sub), style = MaterialTheme.typography.bodyMedium, color = HabittoOnSurfaceSecondary)
                         }
                     }
+                    Spacer(modifier = Modifier.width(16.dp))
                     Switch(
                         checked = reminderEnabled,
                         onCheckedChange = { 
@@ -111,10 +119,10 @@ fun SettingsScreen(viewModel: HabitViewModel) {
         }
 
         // Language Section
-        Text(stringResource(R.string.language), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+        Text(stringResource(R.string.language), style = MaterialTheme.typography.labelLarge, color = HabittoOnSurfaceSecondary)
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(28.dp),
+            shape = RoundedCornerShape(32.dp),
             colors = CardDefaults.cardColors(containerColor = HabittoSurface)
         ) {
             val languageName = when(currentLanguage) {
@@ -136,10 +144,10 @@ fun SettingsScreen(viewModel: HabitViewModel) {
         }
 
         // Data & About Section
-        Text(stringResource(R.string.app_info), style = MaterialTheme.typography.labelSmall, color = HabittoOnSurfaceSecondary)
+        Text(stringResource(R.string.app_info), style = MaterialTheme.typography.labelLarge, color = HabittoOnSurfaceSecondary)
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(28.dp),
+            shape = RoundedCornerShape(32.dp),
             colors = CardDefaults.cardColors(containerColor = HabittoSurface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -249,25 +257,25 @@ fun SettingsItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = onClick)
-            .padding(8.dp),
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(10.dp))
+                .size(56.dp)
+                .clip(RoundedCornerShape(16.dp))
                 .background(iconColor.copy(alpha = 0.1f)),
             contentAlignment = Alignment.Center
         ) {
-            Icon(icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(20.dp))
+            Icon(icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(28.dp))
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(20.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, style = MaterialTheme.typography.titleMedium, color = Color.White)
-            Text(text = subtitle, style = MaterialTheme.typography.bodySmall, color = HabittoOnSurfaceSecondary)
+            Text(text = title, style = MaterialTheme.typography.titleLarge, color = Color.White)
+            Text(text = subtitle, style = MaterialTheme.typography.bodyMedium, color = HabittoOnSurfaceSecondary)
         }
-        Icon(Icons.Default.ChevronRight, contentDescription = null, tint = HabittoOnSurfaceSecondary)
+        Icon(Icons.Default.ChevronRight, contentDescription = null, tint = HabittoOnSurfaceSecondary, modifier = Modifier.size(28.dp))
     }
 }
